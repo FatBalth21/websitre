@@ -6,9 +6,9 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
-const loggedoutheader = fs.readFileSync('./loggedoutheader.html', 'utf8');
-const loggedinheader = fs.readFileSync('./loggedinheader.html', 'utf8');
-const footer = fs.readFileSync('./footer.html', 'utf8');
+const loggedoutheader = fs.readFileSync('./statics/loggedoutheader.html', 'utf8');
+const loggedinheader = fs.readFileSync('./statics/loggedinheader.html', 'utf8');
+const footer = fs.readFileSync('./statics/footer.html', 'utf8');
 
 let storedPassword = "";
 let str = ' '
@@ -27,14 +27,14 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => { // specify endpoint(name) This shows the dafault page
-    customrender('/Basic.html')
+    customrender('Basic.html');
     res.send(output);
 })
-app.get('/Signup.html', function (req, res) { // This shows the signup page
+app.get('/Signup', function (req, res) { // This shows the signup page
     customrender('/Signup.html') // the custom render function is meant to render the header and footer for the page
     res.send(output) // sends the output to the mainpage
 });
-app.get('/Login.html', function (req, res) { // This shows the login page
+app.get('/Login', function (req, res) { // This shows the login page
     customrender('/Login.html')
     res.send(output)
 });
@@ -167,7 +167,7 @@ app.post('/signup', (req, res) => {
             writeStream.write(`${fname},${lname},${email},${password}\n`, (err) => {
                 if (err) throw err;
                 console.log('You signed up');
-                res.redirect('/login.html');
+                res.redirect('/login');
             });
         }
     });
@@ -205,17 +205,17 @@ app.listen(port, () => {
 })
 
 function customrender(input) {
-    str = fs.readFileSync(__dirname + input, 'utf8')
+    str = fs.readFileSync( './statics/' + input, 'utf8')
     output = loggedoutheader + str + footer
     return (output)
 }
 function customrender1(input) {
-    str = fs.readFileSync(__dirname + input, 'utf8')
+    str = fs.readFileSync( './statics/' + input, 'utf8')
     output = loggedinheader + str + footer
     return (output)
 }
 function customrenderprofile(input) {
-    str = fs.readFileSync(__dirname + input, 'utf8')
+    str = fs.readFileSync( './statics/' + input, 'utf8')
     output = loggedinheader + str ;
     return (output)
 }
